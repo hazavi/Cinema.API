@@ -41,7 +41,8 @@ namespace DAL.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                "Data Source=LAPTOP-DMFQLTGK;Initial Catalog=NewCinemaDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
+                "Server=tcp:saicoapidbserver.database.windows.net,1433;Initial Catalog=bioma;Persist Security Info=False;User ID=haz;Password=anH3272G4U4(wb\\*;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;");
+                //"Data Source=LAPTOP-DMFQLTGK;Initial Catalog=NewCinemaDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
         }
         // OnModelCreating-metoden bruges til at konfigurere databasens struktur og forhold mellem tabellerne
