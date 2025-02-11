@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace DAL.Models.DTO
 {
@@ -11,7 +12,7 @@ namespace DAL.Models.DTO
     //  typisk mellem lag som database, service og UI, for at begrænse den data, der bliver sendt eller modtaget.
     public class AddMovieRequestDto
     {
-        public string PosterUrl { get; set; }
+        public IFormFile PosterFile { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public int DurationMinutes { get; set; }

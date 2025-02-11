@@ -1,5 +1,7 @@
-﻿using DAL.Data;
+﻿using AutoMapper;
+using DAL.Data;
 using DAL.Models.Domain;
+using DAL.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,13 @@ namespace DAL.Repositories
     public class SQLMovieRepository : IMovieRepository
     {
         private readonly MyDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public SQLMovieRepository(MyDbContext dbContext)
+
+        public SQLMovieRepository(MyDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         public async Task<Movie> CreateAsync(Movie movie)
@@ -71,15 +76,29 @@ namespace DAL.Repositories
             return movie;
         }
 
-
-
-        public async Task<List<Movie>> GetAllAsync()
+        public async Task<List<MovieDto>> GetAllAsync()
         {
-            // Include related genres in the query to get the full data
-            return await dbContext.Movies
-                                   .Include(m => m.MovieGenres)
-                                   .ThenInclude(mg => mg.Genre)
-                                   .ToListAsync();
+            // Fetch movies with related genres
+            var movies = await dbContext.Movies
+                .Include(m => m.MovieGenres)
+                .ThenInclude(mg => mg.Genre)
+                .ToListAsync();
+
+            // Map Movie entities to MovieDto objects
+            var movieDtos = movies.Select(movie => new MovieDto
+            {
+                MovieId = movie.MovieId,
+                PosterUrlBase64 = movie.PosterUrl != null ? Convert.ToBase64String(movie.PosterUrl) : null,
+                Title = movie.Title,
+                Description = movie.Description,
+                DurationMinutes = movie.DurationMinutes,
+                Rating = movie.Rating,
+                ReleaseDate = movie.ReleaseDate,
+                isShowing = movie.isShowing,
+                GenreIds = movie.MovieGenres.Select(mg => mg.GenreId).ToList()
+            }).ToList();
+
+            return movieDtos;
         }
 
         public async Task<Movie?> GetByIdAsync(int id)
@@ -147,6 +166,7 @@ namespace DAL.Repositories
             await dbContext.SaveChangesAsync();
             return existingMovie;
         }
+
 
     }
 }

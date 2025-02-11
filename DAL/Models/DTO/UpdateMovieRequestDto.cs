@@ -1,4 +1,5 @@
 ﻿using DAL.Models.Domain;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace DAL.Models.DTO
     public class UpdateMovieRequestDto
     {
         public int MovieId { get; set; }
-        public string PosterUrl { get; set; }
+        public IFormFile? PosterFile { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public int DurationMinutes { get; set; }

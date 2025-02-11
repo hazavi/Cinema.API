@@ -12,7 +12,7 @@ namespace DAL.Models.DTO
     public class MovieDto
     {
         public int MovieId { get; set; }
-        public string PosterUrl { get; set; }
+        public string PosterUrlBase64 { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public int DurationMinutes { get; set; }

@@ -4,6 +4,7 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250210114013_posterURLtoByte")]
+    partial class posterURLtoByte
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("PostalCodeId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.Genre", b =>
@@ -67,7 +70,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Genres", (string)null);
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.Movie", b =>
@@ -104,7 +107,7 @@ namespace DAL.Migrations
 
                     b.HasKey("MovieId");
 
-                    b.ToTable("Movies", (string)null);
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MovieGenre", b =>
@@ -119,7 +122,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("MovieGenres", (string)null);
+                    b.ToTable("MovieGenres");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.PostalCode", b =>
@@ -136,7 +139,7 @@ namespace DAL.Migrations
                     b.HasIndex("PostalCodeId")
                         .IsUnique();
 
-                    b.ToTable("PostalCodes", (string)null);
+                    b.ToTable("PostalCodes");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.Seat", b =>
@@ -163,7 +166,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("TheaterId");
 
-                    b.ToTable("Seats", (string)null);
+                    b.ToTable("Seats");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.Showtime", b =>
@@ -189,7 +192,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("TheaterId");
 
-                    b.ToTable("Showtimes", (string)null);
+                    b.ToTable("Showtimes");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.Theater", b =>
@@ -220,7 +223,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Theaters", (string)null);
+                    b.ToTable("Theaters");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.Ticket", b =>
@@ -257,7 +260,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tickets", (string)null);
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.User", b =>
@@ -306,7 +309,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("PostalCodeId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.Address", b =>

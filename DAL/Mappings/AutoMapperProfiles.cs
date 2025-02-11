@@ -40,33 +40,30 @@ namespace NZWalks.API.Mappings
             CreateMap<Genre, GenreDto>().ReverseMap();
 
             // Movie
+            // Mapping from AddMovieRequestDto to Movie (Ignoring PosterUrl)
             CreateMap<AddMovieRequestDto, Movie>()
-                    .ForMember(dest => dest.MovieGenres, opt => opt.MapFrom(src =>
-                        src.GenreIds != null
-                            ? src.GenreIds.Select(gid => new MovieGenre { GenreId = gid }).ToList()
-                            : new List<MovieGenre>()))
-                    .ForMember(dest => dest.isShowing, opt => opt.MapFrom(src => src.isShowing)) 
-                    .ForMember(dest => dest.ReleaseDate, opt => opt.MapFrom(src => src.ReleaseDate));
-
-
-
-            CreateMap<Movie, MovieDto>()
-                .ForMember(dest => dest.PosterUrl, opt => opt.MapFrom(src => src.PosterUrl))
+                .ForMember(dest => dest.PosterUrl, opt => opt.Ignore()) // Handle PosterUrl separately
                 .ForMember(dest => dest.MovieGenres, opt => opt.MapFrom(src =>
-                    src.MovieGenres.Select(mg => new MovieGenreDto
-                    {
-                        GenreId = mg.GenreId,
-                        GenreName = mg.Genre.GenreName
-                    }).ToList()))
-                .ForMember(dest => dest.isShowing, opt => opt.MapFrom(src => src.isShowing));
+                    src.GenreIds != null
+                    ? src.GenreIds.Select(gid => new MovieGenre { GenreId = gid }).ToList()
+                    : new List<MovieGenre>()));
 
+            // Mapping from Movie to MovieDto
+            CreateMap<Movie, MovieDto>()
+                .ForMember(dest => dest.PosterUrlBase64, opt => opt.MapFrom(src =>
+                    src.PosterUrl != null ? Convert.ToBase64String(src.PosterUrl) : null))
+                .ForMember(dest => dest.GenreIds, opt => opt.MapFrom(src =>
+                    src.MovieGenres.Select(mg => mg.Genre.GenreId).ToList()));
 
+            // Mapping MovieGenre to MovieGenreDto
             CreateMap<MovieGenre, MovieGenreDto>()
                 .ForMember(dest => dest.MovieId, opt => opt.MapFrom(src => src.MovieId))
                 .ForMember(dest => dest.GenreId, opt => opt.MapFrom(src => src.GenreId))
-                .ForMember(dest => dest.GenreName, opt => opt.MapFrom(src => src.Genre.GenreName));
+                .ForMember(dest => dest.GenreName, opt => opt.MapFrom(src => src.Genre != null ? src.Genre.GenreName : "Unknown"));
 
-            CreateMap<UpdateMovieRequestDto, Movie>();
+            // Mapping UpdateMovieRequestDto to Movie (Allow Partial Updates)
+            CreateMap<UpdateMovieRequestDto, Movie>()
+                .ForMember(dest => dest.PosterUrl, opt => opt.Ignore()); // Ensure PosterUrl is handled separately
 
             // Address
             CreateMap<AddAddressRequestDto, Address>().ReverseMap();
